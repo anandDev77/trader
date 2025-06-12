@@ -91,6 +91,16 @@ jobs:
     - name: Build and package app
       run: mvn clean package
 
+    # Check that login.jsp is present in the WAR file
+    - name: Check WAR for login.jsp
+      run: |
+        unzip -l target/TraderUI.war | grep login.jsp
+
+    # Print the contents of login.jsp from the WAR file
+    - name: Print login.jsp from WAR
+      run: |
+        unzip -p target/TraderUI.war WEB-INF/jsps/login.jsp
+
     # ---------------------------------------------------------------------------------
     # Step 4: Authenticate to Azure using OIDC and the provided secrets.
     # This step is required for all subsequent Azure CLI and ACR operations.
