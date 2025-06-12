@@ -8,7 +8,7 @@
   <body>
     <img src="header.jpg" width="534" height="200" alt="header image"/>
     <p/>
-    Login to IBM Stock Trader
+    Login to IBM Stock Trader - test 1
     <form method="post"/>
       <table>
         <tr>
