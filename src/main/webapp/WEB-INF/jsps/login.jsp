@@ -21,7 +21,7 @@
         </tr>
       </table>
       <br/>
-      <input type="submit" name="submit" value="Submit" style="font-family: sans-serif; font-size: 16px;">
+      <input type="submit" name="submit" value="Submit" style="font-family: sans-serif; font-size: 16px; background-color: blue; color: white;">
     </form>
     <br/>
     <a href="https://github.com/IBMStockTrader">
