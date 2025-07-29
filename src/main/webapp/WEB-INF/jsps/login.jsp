@@ -114,11 +114,6 @@ Utilities.getLoginMessage(); %>
               Login to <span class="brand-main">Stock</span
               ><span class="brand-accent">Trader</span>
             </h1>
-            <!-- Login message from backend utility -->
-            <div class="alert alert-info" role="alert" aria-live="polite">
-              <i class="bi bi-info-circle me-2" aria-hidden="true"></i>
-              <%=loginMessage%>
-            </div>
           </div>
           <div class="form-inner">
             <!-- Login Form: Bootstrap, accessible, responsive -->
