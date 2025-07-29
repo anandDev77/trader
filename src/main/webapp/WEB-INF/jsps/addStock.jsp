@@ -123,7 +123,7 @@ Utilities.getFooterImage(); %>
                       type="radio"
                       name="action"
                       id="buyAction"
-                      value="Buy"
+                      value="buy"
                       checked
                       required
                       aria-describedby="transaction-help"
@@ -138,7 +138,7 @@ Utilities.getFooterImage(); %>
                       type="radio"
                       name="action"
                       id="sellAction"
-                      value="Sell"
+                      value="sell"
                       required
                       aria-describedby="transaction-help"
                     />
@@ -148,24 +148,6 @@ Utilities.getFooterImage(); %>
                   </div>
                 </div>
                 <div id="transaction-help" class="form-text">Select whether you want to buy or sell stock</div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Owner</label>
-                <div class="input-group">
-                  <span class="input-group-text" id="owner-display-icon">
-                    <i class="bi bi-person" aria-hidden="true"></i>
-                  </span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="owner-display"
-                    value="${param.owner}"
-                    readonly
-                    aria-describedby="owner-display-icon"
-                    style="background-color: #f8f9fa;"
-                  />
-                </div>
-                <small class="text-muted">Portfolio owner (read-only)</small>
               </div>
               <div class="mb-3">
                 <label for="symbol" class="form-label">Stock Symbol</label>
@@ -196,17 +178,42 @@ Utilities.getFooterImage(); %>
                     <i class="bi bi-hash" aria-hidden="true"></i>
                   </span>
                   <input
-                    type="text"
+                    type="number"
                     class="form-control"
                     id="shares"
                     name="shares"
+                    step="1"
+                    min="1"
                     required
                     aria-describedby="shares-icon shares-error"
                     placeholder="Enter number of shares"
                     autocomplete="off"
                   />
                 </div>
-                <div class="invalid-feedback" id="shares-error">Please enter a valid number of shares.</div>
+                <div class="invalid-feedback" id="shares-error">Please enter a valid number of shares (minimum 1).</div>
+              </div>
+              <div class="mb-3">
+                <label for="owner" class="form-label">Portfolio Owner</label>
+                <div class="input-group">
+                  <span class="input-group-text" id="owner-icon">
+                    <i class="bi bi-person" aria-hidden="true"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="owner"
+                    name="owner"
+                    value="<%=request.getParameter("owner") != null ? request.getParameter("owner") : ""%>"
+                    required
+                    aria-describedby="owner-icon owner-error"
+                    placeholder="Enter portfolio owner name"
+                    minlength="1"
+                    maxlength="50"
+                    autocomplete="name"
+                    disabled
+                  />
+                </div>
+                <div class="invalid-feedback" id="owner-error">Please enter the portfolio owner name.</div>
               </div>
               <div class="mb-3">
                 <label class="form-label">Commission</label>
