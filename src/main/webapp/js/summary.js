@@ -7,37 +7,17 @@
   'use strict';
 
   // DOM elements
-  const summaryForm = document.getElementById('summaryForm');
   const createPortfolioBtn = document.querySelector('button[name="submit"][value="Submit"]');
   const tableRows = document.querySelectorAll('tbody tr');
   const actionButtons = document.querySelectorAll('.btn-group .btn');
 
   // Initialize when DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
-    initializeFormValidation();
     initializeTableInteractions();
     initializeAccessibilityFeatures();
   });
 
-  /**
-   * Initialize Bootstrap form validation
-   */
-  function initializeFormValidation() {
-    if (!summaryForm) return;
 
-    // Prevent form submission if validation fails
-    summaryForm.addEventListener('submit', function(event) {
-      if (!summaryForm.checkValidity()) {
-        event.preventDefault();
-        event.stopPropagation();
-        
-        // Announce validation error to screen readers
-        announceToScreenReader('Please fix the form errors before submitting.');
-      }
-      
-      summaryForm.classList.add('was-validated');
-    }, false);
-  }
 
   /**
    * Initialize table interactions and accessibility

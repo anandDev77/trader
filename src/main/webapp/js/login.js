@@ -24,6 +24,16 @@
     initializeAccessibilityFeatures();
   });
 
+  // Also reset loading state when page becomes visible (for back button scenarios)
+  document.addEventListener('pageshow', function() {
+    setLoadingState(false);
+  });
+
+  // Reset loading state when page is loaded from cache
+  window.addEventListener('load', function() {
+    setLoadingState(false);
+  });
+
   /**
    * Initialize Bootstrap form validation
    */
@@ -109,11 +119,26 @@
     loginForm.addEventListener('submit', function() {
       // Set a timeout to show loading state for at least 500ms
       setTimeout(() => {
-        if (loginButton.disabled) {
+        if (loginButton && loginButton.disabled) {
           announceToScreenReader('Login request is taking longer than expected. Please wait.');
         }
       }, 500);
     });
+
+    // Reset loading state when form is reset or page is refreshed
+    loginForm.addEventListener('reset', function() {
+      setLoadingState(false);
+    });
+
+    // Handle browser back/forward navigation
+    window.addEventListener('beforeunload', function() {
+      setLoadingState(false);
+    });
+
+    // Force reset loading state after a short delay to catch any lingering states
+    setTimeout(() => {
+      setLoadingState(false);
+    }, 100);
   }
 
   /**
@@ -133,6 +158,9 @@
       loginButtonText.classList.remove('d-none');
       loginButtonSpinner.classList.add('d-none');
       loginButton.setAttribute('aria-busy', 'false');
+      
+      // Ensure the button is fully reset
+      loginButton.removeAttribute('aria-busy');
     }
   }
 

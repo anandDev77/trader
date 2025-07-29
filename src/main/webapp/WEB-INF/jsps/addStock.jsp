@@ -114,6 +114,7 @@ Utilities.getFooterImage(); %>
           </div>
           <div class="form-inner">
             <form method="post" class="needs-validation" novalidate id="addStockForm">
+              <input type="hidden" name="source" value="${param.source != null ? param.source : 'summary'}" />
               <div class="mb-3">
                 <label class="form-label">Transaction Type</label>
                 <div class="d-flex gap-3">
@@ -123,7 +124,7 @@ Utilities.getFooterImage(); %>
                       type="radio"
                       name="action"
                       id="buyAction"
-                      value="buy"
+                      value="Buy"
                       checked
                       required
                       aria-describedby="transaction-help"
@@ -138,7 +139,7 @@ Utilities.getFooterImage(); %>
                       type="radio"
                       name="action"
                       id="sellAction"
-                      value="sell"
+                      value="Sell"
                       required
                       aria-describedby="transaction-help"
                     />
@@ -203,14 +204,14 @@ Utilities.getFooterImage(); %>
                     class="form-control"
                     id="owner"
                     name="owner"
-                    value="<%=request.getParameter("owner") != null ? request.getParameter("owner") : ""%>"
+                    value="${param.owner}"
                     required
                     aria-describedby="owner-icon owner-error"
                     placeholder="Enter portfolio owner name"
                     minlength="1"
                     maxlength="50"
                     autocomplete="name"
-                    disabled
+                    readonly
                   />
                 </div>
                 <div class="invalid-feedback" id="owner-error">Please enter the portfolio owner name.</div>
@@ -228,6 +229,7 @@ Utilities.getFooterImage(); %>
                 <button
                   type="submit"
                   name="submit"
+                  value="Submit"
                   class="btn btn-primary"
                   id="addStockButton"
                   aria-describedby="submit-status"

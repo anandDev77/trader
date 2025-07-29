@@ -104,7 +104,6 @@ static {
               Please consult the <i>trader</i>, <i>broker</i> and <i>portfolio</i> pod logs for more details, or ask your administator for help.
             </div>
           <% } else { %>
-          <form method="post" id="summaryForm">
             <% List<Broker> brokers = (List<Broker>)request.getAttribute("brokers"); %>
             <% boolean noPortfolios = (brokers != null && brokers.isEmpty()); %>
             <% if(request.isUserInRole("StockTrader")) { %>
@@ -232,7 +231,6 @@ static {
                 </table>
               </div>
             <% } %>
-          </form>
           <% } %>
         </div>
         <div class="card-footer text-center bg-white border-0">
