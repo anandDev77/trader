@@ -29,20 +29,34 @@
   function initializeFormValidation() {
     if (!addStockForm) return;
 
-    // Prevent form submission if validation fails
+    // Handle form submission
     addStockForm.addEventListener('submit', function(event) {
-      if (!addStockForm.checkValidity()) {
-          event.preventDefault();
-          event.stopPropagation();
-        
-        // Announce validation error to screen readers
-        announceToScreenReader('Please fix the form errors before submitting.');
-      } else {
-        // Show loading state
-        setLoadingState(true);
-        announceToScreenReader('Submitting stock transaction...');
+      // Basic validation
+      const symbol = document.getElementById('symbol');
+      const shares = document.getElementById('shares');
+      
+      if (!symbol.value.trim() || !shares.value.trim()) {
+        event.preventDefault();
+        event.stopPropagation();
+        announceToScreenReader('Please fill in all required fields.');
+        return;
       }
       
+      // Show loading state
+      setLoadingState(true);
+      announceToScreenReader('Submitting stock transaction...');
+      
+      // Debug: Log form data
+      console.log('Form submitting with data:', {
+        action: addStockForm.querySelector('input[name="action"]:checked')?.value,
+        symbol: symbol.value,
+        shares: shares.value,
+        owner: addStockForm.querySelector('input[name="owner"]')?.value,
+        submit: addStockForm.querySelector('button[name="submit"]')?.value,
+        source: addStockForm.querySelector('input[name="source"]')?.value
+      });
+      
+      // Allow form to submit
       addStockForm.classList.add('was-validated');
     }, false);
 

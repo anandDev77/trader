@@ -166,7 +166,7 @@ Utilities.getFooterImage(); %>
                     placeholder="Enter stock symbol (e.g., AAPL, GOOGL)"
                     minlength="1"
                     maxlength="10"
-                    pattern="[A-Za-z]{1,10}"
+                    pattern="[A-Za-z0-9]{1,10}"
                     autocomplete="off"
                   />
                 </div>
@@ -203,16 +203,12 @@ Utilities.getFooterImage(); %>
                     type="text"
                     class="form-control"
                     id="owner"
-                    name="owner"
                     value="${param.owner}"
-                    required
                     aria-describedby="owner-icon owner-error"
                     placeholder="Enter portfolio owner name"
-                    minlength="1"
-                    maxlength="50"
-                    autocomplete="name"
-                    readonly
+                    disabled
                   />
+                  <input type="hidden" name="owner" value="${param.owner}" />
                 </div>
                 <div class="invalid-feedback" id="owner-error">Please enter the portfolio owner name.</div>
               </div>
