@@ -143,6 +143,7 @@ Utilities.getFooterImage(); %>
                   class="btn btn-primary"
                   id="submitFeedbackButton"
                   aria-describedby="submit-status"
+                  disabled="true"
                 >
                   <span id="submitFeedbackButtonText">
                     <i class="bi bi-send me-2" aria-hidden="true"></i>Submit Feedback
