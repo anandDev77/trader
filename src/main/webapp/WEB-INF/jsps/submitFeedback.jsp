@@ -6,29 +6,75 @@ Utilities.getFooterImage(); %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Stock Trader</title>
+    <title>Stock Trader - Submit Feedback</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Bootstrap 5 CSS -->
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Submit feedback and suggestions for the StockTrader application to help improve our services." />
+    <meta name="keywords" content="submit feedback, user feedback, stock trader feedback, customer support, user experience" />
+    <meta name="author" content="IBM StockTrader" />
+    <meta name="robots" content="noindex, nofollow" />
+    
+    <!-- Open Graph Meta Tags for Social Sharing -->
+    <meta property="og:title" content="Stock Trader - Submit Feedback" />
+    <meta property="og:description" content="Submit feedback for StockTrader" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="${pageContext.request.requestURL}" />
+    <meta property="og:image" content="<%=headerImage%>" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Stock Trader - Submit Feedback" />
+    <meta name="twitter:description" content="Submit feedback for StockTrader" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="${pageContext.request.contextPath}/favicon.ico" />
+    <link rel="apple-touch-icon" href="${pageContext.request.contextPath}/apple-touch-icon.png" />
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'" />
+    
+    <!-- Fallback for browsers that don't support preload -->
+    <noscript>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" crossorigin="anonymous" />
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap" crossorigin="anonymous" />
+    </noscript>
+    
+    <!-- Bootstrap 5 CSS with SRI -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
     />
-    <!-- Web fonts -->
+    
+    <!-- Web fonts with SRI -->
     <link
       href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap"
       rel="stylesheet"
+      crossorigin="anonymous"
     />
+    
     <!-- Montserrat font for brand -->
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:700&display=swap"
       rel="stylesheet"
+      crossorigin="anonymous"
     />
-    <!-- Bootstrap Icons for heading and button -->
+    
+    <!-- Bootstrap Icons with SRI -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+      integrity="sha384-Ay26V7L8bsJTsX9Sxclnvsn+hkdiwRnrjZJXqKmkIDobPgIIWBOVguEcQQLDuhfN"
+      crossorigin="anonymous"
     />
+    
+    <!-- Custom CSS -->
     <link
       rel="stylesheet"
       type="text/css"
@@ -39,80 +85,104 @@ Utilities.getFooterImage(); %>
       type="text/css"
       href="${pageContext.request.contextPath}/css/submitFeedback.css"
     />
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self';">
   </head>
   <body class="bg-light">
+    <!-- Skip to main content link for accessibility -->
+    <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+    
     <%@ include file="/WEB-INF/jsps/partials/navbar.jspf" %>
     <div
       class="container min-vh-100 d-flex flex-column justify-content-center align-items-center"
+      id="main-content"
     >
       <div class="card shadow-sm main-card w-100">
         <div class="card-body p-4">
           <div class="text-center mb-4">
             <img
               src="<%=headerImage%>"
-              alt="header image"
+              alt="StockTrader header image with golden bull on blue background"
               class="header-img mb-3"
+              loading="eager"
             />
+            <h1 class="page-heading text-center mb-4">
+              <i class="bi bi-chat-dots text-primary me-2" aria-hidden="true"></i>
+              Submit <span class="brand-main">Stock</span
+              ><span class="brand-accent">Trader</span> Feedback
+            </h1>
           </div>
           <div class="form-inner">
-            <div class="mb-3 text-center">
-              <h1 class="page-heading mb-2">
-                <i
-                  class="bi bi-chat-dots text-primary me-2"
-                  aria-hidden="true"
-                ></i>
-                <span class="brand-main">Stock</span
-                ><span class="brand-accent">Trader</span> Feedback
-              </h1>
-              <i>Please share your feedback on this tool!</i>
-            </div>
-            <form method="post" class="needs-validation" novalidate>
+            <form method="post" class="needs-validation" novalidate id="feedbackForm">
               <div class="mb-3">
-                <label for="feedback" class="form-label">Feedback</label>
-                <textarea
-                  class="form-control"
-                  id="feedback"
-                  name="feedback"
-                  rows="7"
-                  required
-                  minlength="5"
-                ></textarea>
-                <div class="invalid-feedback">
-                  Please enter your feedback (at least 5 characters).
+                <label for="feedback" class="form-label">Your Feedback</label>
+                <div class="input-group">
+                  <span class="input-group-text" id="feedback-icon">
+                    <i class="bi bi-chat-dots" aria-hidden="true"></i>
+                  </span>
+                  <textarea
+                    class="form-control"
+                    id="feedback"
+                    name="feedback"
+                    rows="5"
+                    required
+                    aria-describedby="feedback-icon feedback-error feedback-help"
+                    placeholder="Please share your thoughts, suggestions, or report any issues you've encountered..."
+                    minlength="5"
+                    maxlength="1000"
+                  ></textarea>
                 </div>
+                <div class="form-text" id="feedback-help">Minimum 5 characters required. Your feedback helps us improve StockTrader!</div>
+                <div class="invalid-feedback" id="feedback-error">Please provide feedback (minimum 5 characters).</div>
               </div>
-              <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+              <div class="d-grid gap-2">
                 <button
                   type="submit"
                   name="submit"
-                  value="Submit"
                   class="btn btn-primary"
+                  id="submitFeedbackButton"
+                  aria-describedby="submit-status"
                 >
-                  <i class="bi bi-send me-2" aria-hidden="true"></i>Submit
+                  <span id="submitFeedbackButtonText">
+                    <i class="bi bi-send me-2" aria-hidden="true"></i>Submit Feedback
+                  </span>
+                  <span id="submitFeedbackButtonSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                 </button>
                 <button
                   type="button"
-                  class="btn btn-outline-secondary"
-                  onclick="window.history.back();"
+                  class="btn btn-secondary"
+                  onclick="window.history.back()"
+                  aria-label="Cancel and go back to previous page"
                 >
-                  Cancel
+                  <i class="bi bi-arrow-left me-2" aria-hidden="true"></i>Cancel
                 </button>
               </div>
+              <!-- Status message for screen readers -->
+              <div id="submit-status" class="sr-only" aria-live="polite"></div>
             </form>
           </div>
         </div>
         <div class="card-footer text-center bg-white border-0">
-          <a href="https://github.com/IBMStockTrader">
+          <a href="https://github.com/IBMStockTrader" aria-label="Visit StockTrader GitHub repository">
             <img
               src="<%=footerImage%>"
-              alt="footer image"
+              alt="StockTrader footer logo with cloud and building connected by lines"
               class="footer-img"
+              loading="lazy"
             />
           </a>
         </div>
       </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script 
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    
+    <!-- Custom JS -->
     <script src="${pageContext.request.contextPath}/js/submitFeedback.js"></script>
   </body>
 </html>

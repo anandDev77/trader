@@ -42,12 +42,12 @@
   .form-inner {
     max-width: 100%;
     padding: 0 0.5rem;
-  }
+}
   
   .form-inner form {
     width: 100%;
     max-width: 100%;
-  }
+}
   
   /* Ensure buttons are full width on very small screens */
   .btn {
