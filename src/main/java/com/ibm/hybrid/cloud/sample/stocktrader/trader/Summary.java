@@ -111,31 +111,38 @@ public class Summary extends HttpServlet {
 		}
 
 		try {
-			if (Utilities.useOIDC) {
-				String method = request.getMethod();
-				//normally goGet gets called via a GET, but on redirect from a successful login against an OIDC provider (like KeyCloak),
-				//we will get called via a POST, with a form param containing the JWT issued by the OIDC provider, which we'll stash in the session
-				//TODO: Consider using a cookie instead of the session, since if there are multiple Trader pods, we'd need distributed session support enabled
-				//(or some kind of "sticky session" support to get a given browser always routed to the same pod (though that isn't highly available, of course),
-				//such as https://docs.aws.amazon.com/elasticloadbalancing/latest/application/sticky-sessions.html)
-				if (POST.equalsIgnoreCase(method)) {
-					String token = request.getParameter(TOKEN);
-					HttpSession session = request.getSession();
-					if (session!=null) {
-						logger.info("Placing JWT in the http session");
-						session.setAttribute(JWT, token);
-						if (logger.isLoggable(Level.FINE)) {
-							logger.fine(TOKEN+" = "+token);
-							Base64.Decoder decoder = Base64.getUrlDecoder();
-							String[] parts = token.split("\\.");
-							String header = new String(decoder.decode(parts[0]));
-							String payload = new String(decoder.decode(parts[1]));
-							logger.fine("access token header = "+header);
-							logger.fine("access token body = "+payload);
-						}
-					}
-				}
-			} else {
+            if (Utilities.useOIDC) {
+                String method = request.getMethod();
+                // With some providers (e.g., Keycloak implicit flow), the access_token is POSTed back to this servlet.
+                // With Entra ID and Liberty OIDC, tokens are exposed on request attributes instead.
+                if (POST.equalsIgnoreCase(method)) {
+                    String token = request.getParameter(TOKEN);
+                    HttpSession session = request.getSession();
+                    if (session!=null && token != null && !token.isEmpty()) {
+                        logger.info("Placing JWT in the http session (from POST form)");
+                        session.setAttribute(JWT, token);
+                        if (logger.isLoggable(Level.FINE)) {
+                            Base64.Decoder decoder = Base64.getUrlDecoder();
+                            String[] parts = token.split("\\.");
+                            String header = new String(decoder.decode(parts[0]));
+                            String payload = new String(decoder.decode(parts[1]));
+                            logger.fine("access token header = "+header);
+                            logger.fine("access token body = "+payload);
+                        }
+                    }
+                }
+                // Always try Liberty OIDC request attributes (works for Entra ID)
+                String accessTokenAttr = (String) request.getAttribute("com.ibm.websphere.security.oidc.access_token");
+                String idTokenAttr     = (String) request.getAttribute("com.ibm.websphere.security.oidc.id_token");
+                if ((accessTokenAttr != null && !accessTokenAttr.isEmpty()) || (idTokenAttr != null && !idTokenAttr.isEmpty())) {
+                    HttpSession session = request.getSession();
+                    if (session != null) {
+                        String chosen = (accessTokenAttr != null && !accessTokenAttr.isEmpty()) ? accessTokenAttr : idTokenAttr;
+                        session.setAttribute(JWT, chosen);
+                        logger.fine("Stored OIDC token from request attributes into session");
+                    }
+                }
+            } else {
 				if (jwt==null) throw new NullPointerException("Injection of JWT failed!");
 			}
 //			JsonArray portfolios = PortfolioServices.getPortfolios(request);
