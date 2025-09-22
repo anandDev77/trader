@@ -125,7 +125,7 @@ public class Utilities {
 		return authHeader;
 	}
 
-	String getJWT(JsonWebToken jwt, HttpServletRequest request) {
+    String getJWT(JsonWebToken jwt, HttpServletRequest request) {
 		String token = null;
 
 //  The below gets the JWT issued by Liberty itself (via the jwtSSO feature), not the JWT from your OIDC provider (such as KeyCloak)
@@ -133,18 +133,33 @@ public class Utilities {
 //		if ("Bearer".equals(PropagationHelper.getAccessTokenType())) {
 //			token = PropagationHelper.getIdToken().getAccessToken();
 //			logger.fine("Retrieved JWT provided through oidcClientConnect feature");
-		if (useOIDC) {
-			HttpSession session = request.getSession(); //When multiple Trader pods exist, need to enable distributed session support
-			if (session!=null) {
-				token = (String) session.getAttribute(JWT); //Summary.doGet puts this here when redirected to after KeyCloak login
-				if (token!= null) {
-					logger.fine("Retrieved JWT from the session");
-				} else {
-					logger.warning("Unable to retrieve JWT from the session");
-				}
-			} else {
-				logger.warning("Session was null");
-			}
+        if (useOIDC) {
+            // Prefer the access token provided by the Liberty OIDC client
+            String accessToken = (String) request.getAttribute("com.ibm.websphere.security.oidc.access_token");
+            if (accessToken != null && !accessToken.isEmpty()) {
+                logger.fine("Retrieved OIDC access_token from request attribute");
+                return accessToken;
+            }
+
+            // Fallback to id_token only if access token not available
+            String idToken = (String) request.getAttribute("com.ibm.websphere.security.oidc.id_token");
+            if (idToken != null && !idToken.isEmpty()) {
+                logger.fine("Retrieved OIDC id_token from request attribute");
+                return idToken;
+            }
+
+            // Final fallback: legacy behavior using session-scoped token
+            HttpSession session = request.getSession(); //When multiple Trader pods exist, need to enable distributed session support
+            if (session!=null) {
+                token = (String) session.getAttribute(JWT); //Summary.doGet puts this here after OIDC login
+                if (token!= null) {
+                    logger.fine("Retrieved JWT from the session");
+                } else {
+                    logger.warning("Unable to retrieve JWT from the session or OIDC request attributes");
+                }
+            } else {
+                logger.warning("Session was null");
+            }
 		} else {
 			token = jwt.getRawToken();
 			logger.fine("Retrieved JWT provided through CDI injected JsonWebToken");
