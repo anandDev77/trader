@@ -3,7 +3,7 @@ name: Build and push image to GHCR
 on:
   push:
     branches:
-      - entralDfix
+      - entralDfix, entralDfix2
   workflow_dispatch: {}
 
 permissions:
