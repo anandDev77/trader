@@ -153,9 +153,32 @@ public class Summary extends HttpServlet {
 				session.setAttribute("page", 1);
 			}
 			Integer page = (Integer) session.getAttribute("page");
-			// NOTE: you need to include the JWT here because we're calling from a Servlet, not a JAX-RS resource
-			// JWT is only propagated if a REST Service calls a REST Client.
-			List<Broker> brokers = testMode ? getHardcodedBrokers() : brokerClient.getBrokers(utilities.getAuthHeader(jwt, request), page, 10);
+            // Debug which token source will be used and its iss/aud (if available)
+            try {
+                String dbgAccess = (String) request.getAttribute("com.ibm.websphere.security.oidc.access_token");
+                String dbgId     = (String) request.getAttribute("com.ibm.websphere.security.oidc.id_token");
+                String dbgSess   = null;
+                HttpSession s = request.getSession(false);
+                if (s != null) dbgSess = (String) s.getAttribute(JWT);
+                String chosen = dbgAccess!=null && !dbgAccess.isEmpty() ? "access_token(attr)"
+                               : (dbgId!=null && !dbgId.isEmpty() ? "id_token(attr)" : (dbgSess!=null?"session":"none"));
+                String token = utilities.getJWT(jwt, request);
+                if (token != null) {
+                    String[] parts = token.split("\\.");
+                    if (parts.length==3) {
+                        String payload = new String(java.util.Base64.getUrlDecoder().decode(parts[1]));
+                        logger.info("Broker call token source="+chosen+", payload="+payload);
+                    } else {
+                        logger.info("Broker call token source="+chosen+", token is not JWS (parts="+parts.length+")");
+                    }
+                } else {
+                    logger.warning("Broker call token source="+chosen+", but token is null");
+                }
+            } catch (Throwable ignore) { }
+
+            // NOTE: you need to include the JWT here because we're calling from a Servlet, not a JAX-RS resource
+            // JWT is only propagated if a REST Service calls a REST Client.
+            List<Broker> brokers = testMode ? getHardcodedBrokers() : brokerClient.getBrokers(utilities.getAuthHeader(jwt, request), page, 10);
 			brokers.sort((b1, b2)->
 					b1.getOwner().compareToIgnoreCase(b2.getOwner()));
 
