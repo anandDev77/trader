@@ -147,9 +147,8 @@ public class Summary extends HttpServlet {
                 HttpSession preCallSession = request.getSession(false);
                 String sessionJwt = (preCallSession == null) ? null : (String) preCallSession.getAttribute(JWT);
                 if ((accessTokenAttr == null || accessTokenAttr.isEmpty()) && (idTokenAttr == null || idTokenAttr.isEmpty()) && (sessionJwt == null || sessionJwt.isEmpty())) {
-                    logger.warning("No OIDC tokens found in request or session; redirecting to OIDC client to acquire tokens");
-                    // The OIDC client lives at server root (/oidcclient), not under the app context
-                    response.sendRedirect("/oidcclient/redirect/stock-trader");
+                    logger.warning("No OIDC tokens found; invoking container authentication to start OIDC flow");
+                    request.authenticate(response); // lets Liberty start the OIDC flow (sets state/nonce)
                     return;
                 }
             } else {
