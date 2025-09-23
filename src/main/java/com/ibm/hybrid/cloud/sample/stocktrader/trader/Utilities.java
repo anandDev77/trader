@@ -39,6 +39,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.Map;
 
 //Servlet 4.0
 import jakarta.servlet.http.HttpServletRequest;
@@ -125,6 +126,19 @@ public class Utilities {
 		return authHeader;
 	}
 
+    private boolean isLikelyAadJws(String token) {
+        if (token == null) return false;
+        String[] parts = token.split("\\.");
+        if (parts.length != 3) return false;
+        try {
+            String payloadJson = new String(Base64.getUrlDecoder().decode(parts[1]));
+            // very light check on issuer to avoid logging secrets
+            return payloadJson.contains("login.microsoftonline.com") || payloadJson.contains("sts.windows.net");
+        } catch (Throwable ignored) {
+            return false;
+        }
+    }
+
     String getJWT(JsonWebToken jwt, HttpServletRequest request) {
 		String token = null;
 
@@ -137,14 +151,14 @@ public class Utilities {
             // Prefer the access token provided by the Liberty OIDC client
             String accessToken = (String) request.getAttribute("com.ibm.websphere.security.oidc.access_token");
             if (accessToken != null && !accessToken.isEmpty()) {
-                logger.fine("Retrieved OIDC access_token from request attribute");
+                logger.info("Using OIDC access_token from request attribute");
                 return accessToken;
             }
 
             // Fallback to id_token only if access token not available
             String idToken = (String) request.getAttribute("com.ibm.websphere.security.oidc.id_token");
             if (idToken != null && !idToken.isEmpty()) {
-                logger.fine("Retrieved OIDC id_token from request attribute");
+                logger.info("Using OIDC id_token from request attribute");
                 return idToken;
             }
 
@@ -152,8 +166,12 @@ public class Utilities {
             HttpSession session = request.getSession(); //When multiple Trader pods exist, need to enable distributed session support
             if (session!=null) {
                 token = (String) session.getAttribute(JWT); //Summary.doGet puts this here after OIDC login
-                if (token!= null) {
-                    logger.fine("Retrieved JWT from the session");
+                if (isLikelyAadJws(token)) {
+                    logger.info("Using JWT from session (AAD token)");
+                    return token;
+                } else if (token != null) {
+                    logger.warning("Ignoring non-AAD/non-JWS token found in session; awaiting OIDC attributes");
+                    token = null; // ensure we do not send the legacy token
                 } else {
                     logger.warning("Unable to retrieve JWT from the session or OIDC request attributes");
                 }
