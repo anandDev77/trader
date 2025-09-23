@@ -3,7 +3,9 @@ name: Build and push image to GHCR
 on:
   push:
     branches:
-      - entraIDfix, entraIDfix2
+      - entraIDfix
+      - master
+      - '**'
   workflow_dispatch: {}
 
 permissions:
