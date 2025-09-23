@@ -142,6 +142,15 @@ public class Summary extends HttpServlet {
                         logger.fine("Stored OIDC token from request attributes into session");
                     }
                 }
+
+                // If no token is present yet (neither attributes nor session), force OIDC redirect to obtain tokens
+                HttpSession preCallSession = request.getSession(false);
+                String sessionJwt = (preCallSession == null) ? null : (String) preCallSession.getAttribute(JWT);
+                if ((accessTokenAttr == null || accessTokenAttr.isEmpty()) && (idTokenAttr == null || idTokenAttr.isEmpty()) && (sessionJwt == null || sessionJwt.isEmpty())) {
+                    logger.warning("No OIDC tokens found in request or session; redirecting to OIDC client to acquire tokens");
+                    response.sendRedirect(request.getContextPath() + "/oidcclient/redirect/stock-trader");
+                    return;
+                }
             } else {
 				if (jwt==null) throw new NullPointerException("Injection of JWT failed!");
 			}
