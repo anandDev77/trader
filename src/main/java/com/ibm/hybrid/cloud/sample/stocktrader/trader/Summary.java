@@ -148,7 +148,8 @@ public class Summary extends HttpServlet {
                 String sessionJwt = (preCallSession == null) ? null : (String) preCallSession.getAttribute(JWT);
                 if ((accessTokenAttr == null || accessTokenAttr.isEmpty()) && (idTokenAttr == null || idTokenAttr.isEmpty()) && (sessionJwt == null || sessionJwt.isEmpty())) {
                     logger.warning("No OIDC tokens found in request or session; redirecting to OIDC client to acquire tokens");
-                    response.sendRedirect(request.getContextPath() + "/oidcclient/redirect/stock-trader");
+                    // The OIDC client lives at server root (/oidcclient), not under the app context
+                    response.sendRedirect("/oidcclient/redirect/stock-trader");
                     return;
                 }
             } else {
