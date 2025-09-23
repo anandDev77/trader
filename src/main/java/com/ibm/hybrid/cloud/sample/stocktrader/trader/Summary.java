@@ -212,8 +212,12 @@ public class Summary extends HttpServlet {
 			}
 		}
 
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsps/summary.jsp");
-		dispatcher.forward(request, response);
+        if (response.isCommitted()) {
+            logger.fine("Response already committed; skipping forward to JSP");
+            return;
+        }
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsps/summary.jsp");
+        dispatcher.forward(request, response);
 	}
 
 	/**
