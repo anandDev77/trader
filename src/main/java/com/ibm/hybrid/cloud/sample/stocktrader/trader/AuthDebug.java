@@ -53,6 +53,12 @@ public class AuthDebug extends HttpServlet {
         tryDecode("session_jwt", sessionJwt, out);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // After IdP callback (POST), reuse the same logic
+        doGet(request, response);
+    }
+
     private void tryDecode(String label, String token, PrintWriter out) {
         if (token == null || token.isEmpty()) {
             out.println(label + ": <empty>");
