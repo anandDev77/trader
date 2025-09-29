@@ -33,7 +33,8 @@
       responseType="id_token token"
       signatureAlgorithm="RS256"
       scope="openid profile email ${env.OIDC_SCOPE}"
-      groupNameAttribute="groups"
-      discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}">
+      discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}"
+      userNameAttribute="sub"
+      groupNameAttribute="groups">
    </openidConnectClient>
 </server>
