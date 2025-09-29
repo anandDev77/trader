@@ -19,6 +19,18 @@ public class AuthDebug extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // If no tokens yet, trigger the container OIDC flow for this endpoint
+        String probeAccess = (String) request.getAttribute("com.ibm.websphere.security.oidc.access_token");
+        String probeId     = (String) request.getAttribute("com.ibm.websphere.security.oidc.id_token");
+        if ((probeAccess == null || probeAccess.isEmpty()) && (probeId == null || probeId.isEmpty())) {
+            try {
+                request.authenticate(response);
+                return; // container will redirect; on return tokens will be present
+            } catch (Throwable t) {
+                // fall through and print error details below
+            }
+        }
+
         response.setContentType("text/plain");
         PrintWriter out = response.getWriter();
 
