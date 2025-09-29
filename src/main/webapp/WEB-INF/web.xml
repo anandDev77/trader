@@ -2,6 +2,12 @@
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
 	<display-name>Trader UI</display-name>
 	<description>User Interface (UI) for the Stock Trader application</description>
+    <security-role>
+        <role-name>StockViewer</role-name>
+    </security-role>
+    <security-role>
+        <role-name>StockTrader</role-name>
+    </security-role>
 <!-- Note that Social Login/OpenID Connect provides its own login form -->
 	<login-config>
 		<auth-method>FORM</auth-method>
@@ -13,6 +19,7 @@
 	</login-config>
 	<security-constraint>
 		<web-resource-collection>
+			<web-resource-name>protected content</web-resource-name>
 			<url-pattern>/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
