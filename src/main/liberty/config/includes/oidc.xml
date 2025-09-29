@@ -24,7 +24,7 @@
       redirectToRPHostAndPort="${env.OIDC_NODEPORT}">
    </oidcLogin> -->
 
-   <openidConnectClient id="stock-trader"
+  <openidConnectClient id="stock-trader"
       accessTokenInLtpaCookie="false"
       clientId="${env.OIDC_CLIENTID}"
       clientSecret="${env.OIDC_CLIENTSECRET}"
@@ -33,6 +33,16 @@
       responseType="id_token token"
       signatureAlgorithm="RS256"
       scope="openid profile email ${env.OIDC_SCOPE}"
-      discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}">
+      discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}"
+      audiences="${JWT_AUDIENCE}">
    </openidConnectClient>
+
+  <mpJwt id="stockTraderJWT"
+    audiences="${JWT_AUDIENCE}"
+    issuer="${JWT_ISSUER}"
+    jwksUri="${OIDC_JWKS_URL}"
+    userNameAttribute="sub"
+    groupNameAttribute="roles"
+    sslRef="defaultSSLConfig"
+    ignoreApplicationAuthMethod="true"/>
 </server>
