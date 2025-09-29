@@ -49,7 +49,10 @@
         <classloader apiTypeVisibility="+third-party"/>
         <application-bnd>
             <security-role id="StockTrader" name="StockTrader">
-                <special-subject type="ALL_AUTHENTICATED_USERS" id="IBMid"/>
+                <group name="StockTrader"/>
+            </security-role>
+            <security-role id="StockViewer" name="StockViewer">
+                <group name="StockViewer"/>
             </security-role>
         </application-bnd>
     </webApplication>
