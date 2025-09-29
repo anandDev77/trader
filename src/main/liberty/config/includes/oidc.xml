@@ -33,16 +33,6 @@
       responseType="id_token token"
       signatureAlgorithm="RS256"
       scope="openid profile email ${env.OIDC_SCOPE}"
-      discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}"
-      audiences="${JWT_AUDIENCE}">
+      discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}">
    </openidConnectClient>
-
-  <mpJwt id="stockTraderJWT"
-    audiences="${JWT_AUDIENCE}"
-    issuer="${JWT_ISSUER}"
-    jwksUri="${OIDC_JWKS_URL}"
-    userNameAttribute="sub"
-    groupNameAttribute="roles"
-    sslRef="defaultSSLConfig"
-    ignoreApplicationAuthMethod="true"/>
 </server>
