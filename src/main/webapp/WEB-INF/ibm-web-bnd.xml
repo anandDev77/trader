@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-bnd xmlns="http://websphere.ibm.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://websphere.ibm.com/xml/ns/javaee http://websphere.ibm.com/xml/ns/javaee/ibm-web-bnd_1_0.xsd"
+         version="1.0">
+  <security-role name="StockTrader">
+    <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
+  </security-role>
+  <security-role name="StockViewer">
+    <group name="9a60d695-eede-4745-b658-9791201855b5"/>
+  </security-role>
+</web-bnd>
