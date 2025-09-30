@@ -30,27 +30,38 @@ public class AuthDebug extends HttpServlet {
                 // fall through and print error details below
             }
         }
+        response.setContentType("text/plain;charset=UTF-8");
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
 
-        response.setContentType("text/plain");
-        PrintWriter out = response.getWriter();
-
+        StringBuilder sb = new StringBuilder();
         Principal user = request.getUserPrincipal();
-        out.println("principal=" + (user == null ? "<null>" : user.getName()));
-        out.println("role.StockTrader=" + request.isUserInRole("StockTrader"));
-        out.println("role.StockViewer=" + request.isUserInRole("StockViewer"));
+        sb.append("principal=").append(user == null ? "<null>" : user.getName()).append('\n');
+        sb.append("role.StockTrader=").append(request.isUserInRole("StockTrader")).append('\n');
+        sb.append("role.StockViewer=").append(request.isUserInRole("StockViewer")).append('\n');
 
         String accessToken = (String) request.getAttribute("com.ibm.websphere.security.oidc.access_token");
         String idToken     = (String) request.getAttribute("com.ibm.websphere.security.oidc.id_token");
         HttpSession session = request.getSession(false);
         String sessionJwt = session == null ? null : (String) session.getAttribute("jwt");
 
-        out.println("has.access_token.attr=" + (accessToken != null));
-        out.println("has.id_token.attr=" + (idToken != null));
-        out.println("has.session.jwt=" + (sessionJwt != null));
+        sb.append("has.access_token.attr=").append(accessToken != null).append('\n');
+        sb.append("has.id_token.attr=").append(idToken != null).append('\n');
+        sb.append("has.session.jwt=").append(sessionJwt != null).append('\n');
 
+        java.io.StringWriter sw = new java.io.StringWriter();
+        java.io.PrintWriter out = new java.io.PrintWriter(sw);
         tryDecode("id_token", idToken, out);
         tryDecode("access_token", accessToken, out);
         tryDecode("session_jwt", sessionJwt, out);
+        out.flush();
+        sb.append(sw.toString());
+
+        // log and write response
+        logger.info(sb.toString());
+        PrintWriter respOut = response.getWriter();
+        respOut.write(sb.toString());
+        respOut.flush();
     }
 
     @Override
