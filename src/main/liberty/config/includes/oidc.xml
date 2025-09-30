@@ -38,7 +38,7 @@
       userNameAttribute="sub"
       groupNameAttribute="roles"
       realmNameAttribute="iss"
-      mapIdentityToRegistryUser="true"
+      mapIdentityToRegistryUser="false"
       includeIdTokenInSubject="true">
    </openidConnectClient>
 </server>
