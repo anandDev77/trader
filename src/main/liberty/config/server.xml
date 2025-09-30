@@ -41,23 +41,19 @@
 
     <ltpa expiration="1h"/>
 
-    <basicRegistry id="oidc" realm="OIDC">
-        <user name="Y0f9Mm0NPNiKxRkXb-h4QfuQcoGCKpn6O9Whnr3LBNk" password="dummy"/>
-    </basicRegistry>
-
     <webAppSecurity allowFailOverToBasicAuth="true" displayAuthenticationRealm="true" logoutOnHttpSessionExpire="false"
         webAlwaysLogin="true" preserveFullyQualifiedReferrerUrl="true" trackLoggedOutSSOCookies="false" ssoCookieName="StockTraderSSO"
-        useOnlyCustomCookieName="true" ssoUseDomainFromURL="true" allowAuthenticationFailOverToAuthMethod="OIDC"/>
+        useOnlyCustomCookieName="true" ssoUseDomainFromURL="true"/>
 
     <webApplication id="TraderUI" name="TraderUI" location="TraderUI.war" contextRoot="/trader">
         <classloader apiTypeVisibility="+third-party"/>
         <application-bnd>
             <security-role name="StockTrader">
-                <user name="Y0f9Mm0NPNiKxRkXb-h4QfuQcoGCKpn6O9Whnr3LBNk"/>
+                <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
             </security-role>
-            <security-role name="StockViewer">
-                <user name="Y0f9Mm0NPNiKxRkXb-h4QfuQcoGCKpn6O9Whnr3LBNk"/>
-            </security-role>
+            <!-- <security-role name="StockViewer">
+                <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
+            </security-role> -->
         </application-bnd>
     </webApplication>
 </server>
