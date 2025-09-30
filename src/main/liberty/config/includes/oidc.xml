@@ -37,8 +37,6 @@
       audiences="${env.OIDC_CLIENTID}"
       userNameAttribute="sub"
       groupNameAttribute="roles"
-      realmNameAttribute="iss"
-      mapIdentityToRegistryUser="false"
-      includeIdTokenInSubject="true">
+      realmNameAttribute="iss">
    </openidConnectClient>
 </server>
