@@ -27,12 +27,15 @@
 		</auth-constraint>
 	</security-constraint>
 
-    <!-- Make /auth/debug publicly accessible (no authentication) for troubleshooting -->
+    <!-- Force OIDC on /auth/debug, but allow any authenticated user (**) so we can inspect tokens -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>debug endpoint</web-resource-name>
             <url-pattern>/auth/debug</url-pattern>
         </web-resource-collection>
+        <auth-constraint>
+            <role-name>**</role-name>
+        </auth-constraint>
     </security-constraint>
 	<security-constraint>
 		<web-resource-collection>
