@@ -41,6 +41,10 @@
 
     <ltpa expiration="1h"/>
 
+    <basicRegistry id="oidc" realm="OIDC">
+        <user name="Y0f9Mm0NPNiKxRkXb-h4QfuQcoGCKpn6O9Whnr3LBNk" password="dummy"/>
+    </basicRegistry>
+
     <webAppSecurity allowFailOverToBasicAuth="true" displayAuthenticationRealm="true" logoutOnHttpSessionExpire="false"
         webAlwaysLogin="true" preserveFullyQualifiedReferrerUrl="true" trackLoggedOutSSOCookies="false" ssoCookieName="StockTraderSSO"
         useOnlyCustomCookieName="true" ssoUseDomainFromURL="true" allowAuthenticationFailOverToAuthMethod="OIDC"/>
