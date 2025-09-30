@@ -6,7 +6,4 @@
   <security-role name="StockTrader">
     <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
   </security-role>
-  <security-role name="StockViewer">
-    <group name="9a60d695-eede-4745-b658-9791201855b5"/>
-  </security-role>
 </application-bnd>
