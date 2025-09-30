@@ -47,6 +47,13 @@
 
     <webApplication id="TraderUI" name="TraderUI" location="TraderUI.war" contextRoot="/trader">
         <classloader apiTypeVisibility="+third-party"/>
-        <!-- Role bindings are defined in WEB-INF/ibm-application-bnd.xml within the WAR -->
+        <application-bnd>
+            <security-role name="StockTrader">
+                <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
+            </security-role>
+            <!-- <security-role name="StockViewer">
+                <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
+            </security-role> -->
+        </application-bnd>
     </webApplication>
 </server>
