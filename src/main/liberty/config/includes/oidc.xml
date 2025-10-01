@@ -34,6 +34,8 @@
       signatureAlgorithm="RS256"
       scope="openid profile email ${env.OIDC_SCOPE}"
       groupNameAttribute="roles"
+      audiences="${env.OIDC_CLIENTID}"
+      userNameAttribute="sub"
       discoveryEndpointUrl="${env.OIDC_DISCOVERY_URL}">
    </openidConnectClient>
 </server>
