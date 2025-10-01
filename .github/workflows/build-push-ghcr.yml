@@ -6,6 +6,7 @@ on:
       - entraIDfix
       - master
       - '**'
+      - feat-EntraIDRBAC
   workflow_dispatch: {}
 
 permissions:
