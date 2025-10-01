@@ -4,6 +4,6 @@
                  xsi:schemaLocation="http://websphere.ibm.com/xml/ns/javaee http://websphere.ibm.com/xml/ns/javaee/ibm-application-bnd_1_2.xsd"
                  version="1.2">
   <security-role name="StockTrader">
-    <group name="aeed9104-e826-4c5b-96c2-914eb6cbf004"/>
+    <group name="StockTrader"/>
   </security-role>
 </application-bnd>
